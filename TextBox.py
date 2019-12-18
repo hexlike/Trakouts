@@ -1,19 +1,18 @@
 import pygame
 import ctypes
 
-class Button:
+class Box:
 
 	def __init__(self, *args):
-		self.type = "Button"
+		pygame.init()
+		self.type = "Box"
 		self.x = args[0]
 		self.y = args[1]
 		self.w = args[2]
 		self.h = args[3]
 		self.text = None
-		self.image = pygame.image.load("button.png")
+		self.image = pygame.image.load("box.png")
 		self.image = pygame.transform.scale(self.image, (self.w, self.h))
-		self.selected = pygame.image.load("buttonselected.png")
-		self.selected = pygame.transform.scale(self.selected, (0, self.h))
 		self.rect = [self.x, self.y, self.w, self.h]
 		if len(args) > 4:
 			self.text = args[4]
@@ -22,36 +21,10 @@ class Button:
 			self.fontObject = pygame.font.SysFont(self.font, self.fontsize)
 			self.textObject = self.fontObject.render(self.text, True, (0, 0, 0))
 			self.fontX, self.fontY = self.getFontXY()
-			print("ButtonX: " + str(self.x) + " ButtonY: " + str(self.y) + " TextX: " + str(self.fontX) + " TextY: " + str(self.fontY))
-
-	def rectCol(self, rect1, rect2):
-		if rect1[0] + rect1[2] > rect2[0] and rect1[0] < rect2[0] + rect2[2] and rect1[1] < rect2[1] + rect2[3] and rect1[1] + rect1[3] > rect2[1]:
-			return True
-		else:
-			return False
-
-	def rectMouse(self, rect):
-		mouse = pygame.mouse.get_pos()
-		return mouse[0] > rect[0] and mouse[0] < rect[0] + rect[2] and mouse[1] > rect[1] and mouse[1] < rect[1] + rect[3]
-
-	#def updatePosition(self):
-		#self.selected = pygame.transform.scale(self.selected, (pygame.mouse.get_pos()[0] - 20, 20))
-
-	def update(self):
-		if self.rectMouse(self.rect):
-			if self.type == "AudioButton":
-				if pygame.mixer.music.get_busy() == True and self.counter != 0:
-					pygame.mixer.music.pause()
-				elif pygame.mixer.music.get_busy() == False and self.counter != 0:
-					pygame.mixer.music.unpause()
-				if self.counter == 0:
-					pygame.mixer.music.play()
-					self.counter += 1
-			#self.updatePosition()
+			print("BoxX: " + str(self.x) + " BoxY: " + str(self.y) + " TextX: " + str(self.fontX) + " TextY: " + str(self.fontY))
 
 	def render(self, screen):
 		screen.blit(self.image, (self.x, self.y))
-		screen.blit(self.selected, (self.x, self.y))
 		if self.text != None:
 			screen.blit(self.textObject, (self.fontX, self.fontY))
 
@@ -77,14 +50,3 @@ class Button:
 		self.image = self.image.copy()
 		self.image.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
 		self.image.fill(color[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
-
-	def addAudio(self, filename):
-		self.audio = pygame.mixer.music.load(filename)
-		self.type = "AudioButton"
-		self.counter = 0
-
-
-
-
-
-

@@ -1,9 +1,10 @@
 import pygame
 import ctypes
 
-class Button:
+class PygameButton:
 
 	def __init__(self, *args):
+		pygame.init()
 		self.type = "Button"
 		self.x = args[0]
 		self.y = args[1]
